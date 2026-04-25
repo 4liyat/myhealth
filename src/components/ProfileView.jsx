@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Fingerprint, CreditCard, ChevronRight, Settings, Bell, Eye, Lock, Unlock, FileText, Activity, History } from 'lucide-react';
 
-const ProfileView = ({ data }) => {
+const ProfileView = ({ data, onTabChange }) => {
   const [showVault, setShowVault] = useState(false);
   const [userData] = useState({
     name: data?.name || "Juan Pérez",
@@ -21,6 +21,10 @@ const ProfileView = ({ data }) => {
       }
     ]
   });
+
+  const handleSettings = () => {
+    alert("Ajustes: Próximamente podrás editar tu perfil y configurar permisos.");
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-12">
@@ -90,85 +94,7 @@ const ProfileView = ({ data }) => {
         </div>
       </section>
 
-      {/* SECCIÓN 2: BÓVEDA MÉDICA (PRIVADA) */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between px-2">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
-            <Lock size={14} className="text-myhealth-blue" /> Bóveda de Salud (Privada)
-          </h3>
-          <ShieldCheck size={16} className="text-myhealth-blue" />
-        </div>
-
-        <div className={`bg-slate-900 rounded-[40px] transition-all duration-500 border-2 overflow-hidden ${showVault ? 'border-myhealth-blue shadow-2xl shadow-blue-900/20' : 'border-slate-800'}`}>
-          {!showVault ? (
-            <div className="p-8 space-y-6 flex flex-col items-center text-center">
-              <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center text-myhealth-blue border border-white/10">
-                <Fingerprint size={40} />
-              </div>
-              <div className="space-y-2">
-                <h4 className="text-white font-black text-xl italic uppercase tracking-tighter">Bóveda Cifrada</h4>
-                <p className="text-slate-400 text-xs px-2 leading-relaxed font-medium">
-                  Tu historial clínico y medicación están protegidos con tecnología Monad.
-                </p>
-              </div>
-              <button 
-                onClick={() => setShowVault(true)}
-                className="w-full bg-myhealth-blue hover:bg-blue-600 text-white py-5 rounded-[24px] font-black uppercase tracking-widest text-xs transition-all shadow-lg shadow-blue-900/40 active:scale-95"
-              >
-                Desbloquear Información
-              </button>
-            </div>
-          ) : (
-            <div className="animate-in fade-in slide-in-from-top-4 duration-500">
-              <div className="p-6 space-y-6">
-                <div className="flex justify-between items-center border-b border-white/10 pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-myhealth-blue/20 rounded-xl">
-                      <Unlock size={18} className="text-myhealth-blue" />
-                    </div>
-                    <span className="text-white font-black text-sm uppercase tracking-widest leading-none">Acceso Autorizado</span>
-                  </div>
-                  <button onClick={() => setShowVault(false)} className="text-[10px] text-slate-500 font-bold uppercase hover:text-white transition-colors">Cerrar</button>
-                </div>
-
-                <div className="space-y-5">
-                  <div className="space-y-2">
-                    <p className="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1 tracking-widest">
-                      <FileText size={10} /> Historial Clínico
-                    </p>
-                    <div className="space-y-2">
-                      {userData.vaultData.history.map((item, i) => (
-                        <div key={i} className="bg-white/5 p-4 rounded-2xl text-slate-200 text-xs font-semibold border border-white/5">
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
-                      <p className="text-[9px] font-black text-slate-500 uppercase mb-1 tracking-widest">Medicinas</p>
-                      <p className="text-white text-xs font-bold">{userData.vaultData.medications[0]}</p>
-                    </div>
-                    <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
-                      <p className="text-[9px] font-black text-slate-500 uppercase mb-1 tracking-widest">Última Cita</p>
-                      <p className="text-white text-xs font-bold">{userData.vaultData.lastCheckup}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-white/5 p-4 text-center">
-                <p className="text-[9px] text-slate-600 font-bold uppercase tracking-widest italic">
-                  Datos Sincronizados con Monad Blockchain
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* SECCIÓN 3: RED DE APOYO */}
+      {/* SECCIÓN 2: RED DE APOYO */}
       <section className="bg-white rounded-[32px] p-6 shadow-sm border border-slate-100 space-y-4">
         <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
           <Bell size={14} className="text-myhealth-red" /> Contactos SOS
@@ -189,13 +115,97 @@ const ProfileView = ({ data }) => {
         ))}
       </section>
 
+      {/* SECCIÓN 3: BÓVEDA MÉDICA (PRIVADA) */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between px-2">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+            <Lock size={14} className="text-myhealth-blue" /> Bóveda de Salud (Privada)
+          </h3>
+          <ShieldCheck size={16} className="text-myhealth-blue" />
+        </div>
+
+        <div className={`bg-white rounded-[40px] transition-all duration-500 border-2 overflow-hidden ${showVault ? 'border-myhealth-blue shadow-lg shadow-blue-100' : 'border-slate-100'}`}>
+          {!showVault ? (
+            <div className="p-8 space-y-6 flex flex-col items-center text-center">
+              <div className="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center text-myhealth-blue border border-blue-100">
+                <Fingerprint size={40} />
+              </div>
+              <div className="space-y-2">
+                <h4 className="text-slate-900 font-black text-xl italic uppercase tracking-tighter">Bóveda Cifrada</h4>
+                <p className="text-slate-500 text-xs px-2 leading-relaxed font-medium">
+                  Tu historial clínico y medicación están protegidos con tecnología Monad.
+                </p>
+              </div>
+              <button 
+                onClick={() => setShowVault(true)}
+                className="w-full bg-myhealth-blue hover:bg-blue-600 text-white py-5 rounded-[24px] font-black uppercase tracking-widest text-xs transition-all shadow-lg shadow-blue-200 active:scale-95"
+              >
+                Desbloquear Información
+              </button>
+            </div>
+          ) : (
+            <div className="animate-in fade-in slide-in-from-top-4 duration-500">
+              <div className="p-6 space-y-6">
+                <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-myhealth-blue/10 rounded-xl">
+                      <Unlock size={18} className="text-myhealth-blue" />
+                    </div>
+                    <span className="text-slate-900 font-black text-sm uppercase tracking-widest leading-none">Acceso Autorizado</span>
+                  </div>
+                  <button onClick={() => setShowVault(false)} className="text-[10px] text-slate-400 font-bold uppercase hover:text-slate-900 transition-colors">Cerrar</button>
+                </div>
+
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <p className="text-[9px] font-black text-slate-400 uppercase flex items-center gap-1 tracking-widest">
+                      <FileText size={10} /> Historial Clínico
+                    </p>
+                    <div className="space-y-2">
+                      {userData.vaultData.history.map((item, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-2xl text-slate-700 text-xs font-semibold border border-slate-100">
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                      <p className="text-[9px] font-black text-slate-400 uppercase mb-1 tracking-widest">Medicinas</p>
+                      <p className="text-slate-800 text-xs font-bold">{userData.vaultData.medications[0]}</p>
+                    </div>
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                      <p className="text-[9px] font-black text-slate-400 uppercase mb-1 tracking-widest">Última Cita</p>
+                      <p className="text-slate-800 text-xs font-bold">{userData.vaultData.lastCheckup}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-slate-50 p-4 text-center border-t border-slate-100">
+                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest italic">
+                  Datos Sincronizados con Monad Blockchain
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* OPCIONES ADICIONALES */}
       <div className="flex gap-4 px-2">
-        <button className="flex-1 bg-slate-100 p-4 rounded-2xl text-slate-500 flex flex-col items-center gap-1 transition-colors hover:bg-slate-200">
+        <button 
+          onClick={handleSettings}
+          className="flex-1 bg-slate-100 p-4 rounded-2xl text-slate-500 flex flex-col items-center gap-1 transition-colors hover:bg-slate-200 active:scale-95"
+        >
           <Settings size={20} />
           <span className="text-[9px] font-black uppercase">Ajustes</span>
         </button>
-        <button className="flex-1 bg-slate-100 p-4 rounded-2xl text-slate-500 flex flex-col items-center gap-1 transition-colors hover:bg-slate-200">
+        <button 
+          onClick={() => onTabChange('activity')}
+          className="flex-1 bg-slate-100 p-4 rounded-2xl text-slate-500 flex flex-col items-center gap-1 transition-colors hover:bg-slate-200 active:scale-95"
+        >
           <History size={20} />
           <span className="text-[9px] font-black uppercase">Wallet</span>
         </button>

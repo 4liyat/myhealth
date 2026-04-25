@@ -85,7 +85,7 @@ function App() {
                 </button>
               </div>
             ) : (
-              <ProfileView data={userData} />
+              <ProfileView data={userData} onTabChange={setActiveTab} />
             )}
           </div>
         )}
