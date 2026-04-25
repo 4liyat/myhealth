@@ -9,21 +9,19 @@ const ProfileView = ({ data }) => {
     bloodType: data?.bloodType || "O+",
     religion: data?.religion || "No especificada",
     chronicDisease: data?.chronicDisease || "Ninguna registrada",
+    allergies: data?.allergies || "Ninguna registrada",
     baseMedication: data?.baseMedication || "Sin medicación",
     history: data?.history || "Sin historial registrado",
-    isDonor: data?.isDonor || "No",
+    isDonor: data?.isDonor ?? false,
     pin: data?.pin || "****",
-    contacts: [
+    contacts: data?.contacts || [
       { 
-        name: data?.contact1Name || "María García", 
-        phone: data?.contact1Phone || "+52 33 1234 5678",
-        relation: "Contacto Principal"
-      },
-      ...(data?.contact2Name ? [{
-        name: data.contact2Name,
-        phone: data.contact2Phone,
-        relation: "Contacto Secundario"
-      }] : [])
+        name: "María García", 
+        phone: "+52 33 1234 5678",
+        relation: "Contacto Principal",
+        email: "maria@example.com",
+        active: true
+      }
     ]
   });
 
@@ -97,7 +95,9 @@ const ProfileView = ({ data }) => {
               </div>
               <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100">
                 <p className="text-[8px] font-bold text-slate-400 uppercase">Donador</p>
-                <p className="text-xs font-black text-slate-800 leading-none">{userData.isDonor}</p>
+                <p className={`text-xs font-black leading-none ${userData.isDonor ? 'text-green-600' : 'text-slate-400'}`}>
+                  {userData.isDonor ? 'SÍ' : 'NO'}
+                </p>
               </div>
               <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100">
                 <p className="text-[8px] font-bold text-slate-400 uppercase">Religión</p>
@@ -108,10 +108,11 @@ const ProfileView = ({ data }) => {
             <div className="space-y-4">
               <div>
                 <p className="text-[9px] font-black text-slate-400 uppercase flex items-center gap-1 tracking-widest mb-2">
-                  <FileText size={10} /> Historial Clínico & Cirugías
+                  <FileText size={10} /> Alergias & Historial Clínico
                 </p>
-                <div className="bg-slate-50 p-4 rounded-2xl text-slate-700 text-xs font-semibold border border-slate-100 leading-relaxed">
-                  {userData.history}
+                <div className="bg-slate-50 p-4 rounded-2xl space-y-2 border border-slate-100 leading-relaxed">
+                  <p className="text-xs font-black text-red-600 uppercase">Críticas: {userData.allergies}</p>
+                  <p className="text-xs font-semibold text-slate-700">{userData.history}</p>
                 </div>
               </div>
 

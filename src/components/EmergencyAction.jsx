@@ -13,16 +13,16 @@ const EmergencyAction = () => {
     return {
       name: "JUAN PÉREZ",
       bloodType: "O+",
-      criticalAllergy: "Penicilina",
+      allergies: "Penicilina",
       nss: "1234-56-7890",
       religion: "Católico",
       chronicDisease: "Diabetes Tipo 2",
       baseMedication: "Metformina / Insulina",
-      isDonor: "SÍ, DONADOR",
+      isDonor: true,
       history: "Cirugía de Apéndice (2024), Tratamiento Hipertensión desde 2023.",
       contacts: [
-        { name: "María (Esposa)", phone: "+52 33 1234 5678" },
-        { name: "Carlos (Hijo)", phone: "+52 33 8765 4321" }
+        { name: "María (Esposa)", phone: "+52 33 1234 5678", email: "maria@example.com", relation: "Esposa", active: true },
+        { name: "Carlos (Hijo)", phone: "+52 33 8765 4321", email: "carlos@example.com", relation: "Hijo", active: true }
       ]
     };
   };
@@ -129,14 +129,16 @@ const EmergencyAction = () => {
               <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1">
                 <Heart size={10} className="text-myhealth-red" /> Donante
               </p>
-              <p className="text-sm font-black text-slate-800 uppercase leading-none truncate">{basicData?.isDonor}</p>
+              <p className={`text-sm font-black uppercase leading-none truncate ${basicData?.isDonor ? 'text-green-600' : 'text-slate-800'}`}>
+                {basicData?.isDonor ? 'SÍ, DONADOR' : 'NO'}
+              </p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-slate-50 p-4 rounded-3xl border border-slate-100">
               <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Alergias</p>
-              <p className="text-sm font-black text-red-600 uppercase leading-tight truncate">{basicData?.criticalAllergy}</p>
+              <p className="text-sm font-black text-red-600 uppercase leading-tight truncate">{basicData?.allergies}</p>
             </div>
             <div className="bg-slate-50 p-4 rounded-3xl border border-slate-100">
               <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Religión</p>

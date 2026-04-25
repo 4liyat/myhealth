@@ -10,14 +10,19 @@ const RegisterForm = ({ onComplete }) => {
     bloodType: '',
     religion: '',
     chronicDisease: '',
+    allergies: '',
     baseMedication: '',
     history: '',
     pin: '',
-    isDonor: 'No',
+    isDonor: false,
     contact1Name: '',
     contact1Phone: '',
+    contact1Relation: '',
+    contact1Email: '',
     contact2Name: '',
-    contact2Phone: ''
+    contact2Phone: '',
+    contact2Relation: '',
+    contact2Email: ''
   });
   const [isMinting, setIsMinting] = useState(false);
 
@@ -31,10 +36,41 @@ const RegisterForm = ({ onComplete }) => {
       return;
     }
     setIsMinting(true);
-    console.log("Registrando en Monad...", formData);
+
+    const formattedData = {
+      name: formData.name,
+      phone: formData.phone,
+      nss: formData.nss,
+      bloodType: formData.bloodType,
+      religion: formData.religion,
+      chronicDisease: formData.chronicDisease,
+      allergies: formData.allergies,
+      baseMedication: formData.baseMedication,
+      history: formData.history,
+      pin: formData.pin,
+      isDonor: formData.isDonor,
+      contacts: [
+        {
+          name: formData.contact1Name,
+          phone: formData.contact1Phone,
+          relation: formData.contact1Relation,
+          email: formData.contact1Email,
+          active: true
+        },
+        ...(formData.contact2Name ? [{
+          name: formData.contact2Name,
+          phone: formData.contact2Phone,
+          relation: formData.contact2Relation,
+          email: formData.contact2Email,
+          active: true
+        }] : [])
+      ]
+    };
+
+    console.log("Registrando en Monad...", formattedData);
     await new Promise(r => setTimeout(r, 3000));
     setIsMinting(false);
-    onComplete(formData);
+    onComplete(formattedData);
   };
 
   const inputStyle = "w-full p-4 rounded-2xl border-2 border-slate-100 focus:border-myhealth-blue outline-none transition-all font-medium text-slate-700 bg-white shadow-sm text-sm";
@@ -113,12 +149,14 @@ const RegisterForm = ({ onComplete }) => {
                 <option value="AB+">AB+</option><option value="AB-">AB-</option>
               </select>
             </div>
-            <div>
+            <div className="flex flex-col">
               <label className={labelStyle}>¿Donador?</label>
-              <select className={inputStyle} value={formData.isDonor} onChange={(e) => setFormData({...formData, isDonor: e.target.value})}>
-                <option value="No">No</option>
-                <option value="Sí">Sí</option>
-              </select>
+              <button 
+                onClick={() => setFormData({...formData, isDonor: !formData.isDonor})}
+                className={`flex-1 rounded-2xl border-2 transition-all font-black uppercase text-[10px] tracking-widest ${formData.isDonor ? 'bg-green-50 border-green-200 text-green-600' : 'bg-slate-50 border-slate-100 text-slate-400'}`}
+              >
+                {formData.isDonor ? 'Sí, Donante' : 'No'}
+              </button>
             </div>
           </div>
 
@@ -131,6 +169,11 @@ const RegisterForm = ({ onComplete }) => {
               <label className={labelStyle}>Enfermedad Crónica</label>
               <input type="text" className={inputStyle} placeholder="Ej. Diabetes..." value={formData.chronicDisease} onChange={(e) => setFormData({...formData, chronicDisease: e.target.value})} />
             </div>
+          </div>
+
+          <div>
+            <label className={labelStyle}>Alergias Críticas</label>
+            <input type="text" className={inputStyle} placeholder="Ej. Penicilina, Nueces..." value={formData.allergies} onChange={(e) => setFormData({...formData, allergies: e.target.value})} />
           </div>
 
           <div>
@@ -161,7 +204,11 @@ const RegisterForm = ({ onComplete }) => {
           <div className="bg-slate-50 p-4 rounded-3xl space-y-4">
             <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1"><Phone size={10} /> Contacto Principal</p>
             <input type="text" className={inputStyle} placeholder="Nombre del contacto" value={formData.contact1Name} onChange={(e) => setFormData({...formData, contact1Name: e.target.value})} />
-            <input type="tel" className={inputStyle} placeholder="Teléfono" value={formData.contact1Phone} onChange={(e) => setFormData({...formData, contact1Phone: e.target.value})} />
+            <div className="grid grid-cols-2 gap-3">
+              <input type="tel" className={inputStyle} placeholder="Teléfono" value={formData.contact1Phone} onChange={(e) => setFormData({...formData, contact1Phone: e.target.value})} />
+              <input type="text" className={inputStyle} placeholder="Parentesco" value={formData.contact1Relation} onChange={(e) => setFormData({...formData, contact1Relation: e.target.value})} />
+            </div>
+            <input type="email" className={inputStyle} placeholder="Correo Electrónico" value={formData.contact1Email} onChange={(e) => setFormData({...formData, contact1Email: e.target.value})} />
           </div>
 
           <div className="flex gap-3">
@@ -231,18 +278,22 @@ const RegisterForm = ({ onComplete }) => {
                 <Edit2 size={16} />
               </button>
               <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1"><Droplet size={10}/> Médica</p>
-              <div className="grid grid-cols-2 gap-2 mb-2">
-                <div className="bg-white p-2 rounded-xl border border-slate-100">
+              <div className="grid grid-cols-3 gap-2 mb-2">
+                <div className="bg-white p-2 rounded-xl border border-slate-100 text-center">
                   <p className="text-[8px] font-bold text-slate-400 uppercase">Sangre</p>
                   <p className="text-xs font-black text-myhealth-red">{formData.bloodType}</p>
                 </div>
-                <div className="bg-white p-2 rounded-xl border border-slate-100">
+                <div className="bg-white p-2 rounded-xl border border-slate-100 text-center">
+                  <p className="text-[8px] font-bold text-slate-400 uppercase">Donador</p>
+                  <p className={`text-xs font-black ${formData.isDonor ? 'text-green-600' : 'text-slate-400'}`}>{formData.isDonor ? 'SÍ' : 'NO'}</p>
+                </div>
+                <div className="bg-white p-2 rounded-xl border border-slate-100 text-center">
                   <p className="text-[8px] font-bold text-slate-400 uppercase">Religión</p>
-                  <p className="text-xs font-black text-slate-800">{formData.religion || 'N/A'}</p>
+                  <p className="text-[10px] font-black text-slate-800 truncate">{formData.religion || 'N/A'}</p>
                 </div>
               </div>
+              <p className="text-[10px] text-slate-700 font-medium"><strong>Alergias:</strong> <span className="text-red-600 font-bold">{formData.allergies || 'Ninguna'}</span></p>
               <p className="text-[10px] text-slate-700 font-medium"><strong>Crónica:</strong> {formData.chronicDisease || 'Ninguna'}</p>
-              <p className="text-[10px] text-slate-700 font-medium truncate"><strong>Historial:</strong> {formData.history || 'Sin registros'}</p>
             </div>
 
             {/* Sección 3: Seguridad */}
