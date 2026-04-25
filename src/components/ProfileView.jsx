@@ -18,6 +18,28 @@ const ProfileView = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-12">
       
+      {/* HEADER DEL PERFIL CON FOTO */}
+      <div className="flex flex-col items-center text-center space-y-4 pt-4">
+        <div className="relative">
+          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-200">
+            <img 
+              src="/assets/patient-photo.png" 
+              alt="Tu foto de perfil" 
+              className="w-full h-full object-cover"
+              onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200"; }}
+            />
+          </div>
+          <div className="absolute -bottom-1 -right-1 bg-mihealth-blue border-2 border-white w-6 h-6 rounded-full flex items-center justify-center shadow-sm">
+            <ShieldCheck size={14} className="text-white" />
+          </div>
+        </div>
+        
+        <div>
+          <h2 className="text-2xl font-black text-slate-900 italic tracking-tighter uppercase">{userData.name}</h2>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Identidad Blockchain Activa</p>
+        </div>
+      </div>
+
       {/* SECCIÓN 1: PERFIL DE EMERGENCIA (PÚBLICO) */}
       <section className="space-y-4">
         <div className="flex items-center justify-between px-2">

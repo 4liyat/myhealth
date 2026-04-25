@@ -94,12 +94,26 @@ const EmergencyAction = () => {
           <CheckCircle2 size={16} />
         </div>
         
-        <div className="p-6 space-y-5">
-          {/* Identificación */}
-          <div className="text-center pb-2">
-            <h2 className="text-4xl font-black text-slate-900 leading-none italic uppercase tracking-tighter">{basicData?.name}</h2>
-            <div className="flex items-center justify-center gap-2 mt-2">
-               <span className="text-[10px] font-black bg-slate-100 text-slate-500 px-3 py-1 rounded-full uppercase tracking-widest">NSS: {basicData?.nss}</span>
+        <div className="p-6 space-y-6">
+          {/* Identificación con Foto */}
+          <div className="flex flex-col items-center text-center space-y-4">
+            <div className="relative">
+              <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-200">
+                <img 
+                  src="/assets/patient-photo.png" 
+                  alt="Foto del paciente" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200"; }}
+                />
+              </div>
+              <div className="absolute -bottom-1 -right-1 bg-green-500 border-4 border-white w-6 h-6 rounded-full shadow-sm"></div>
+            </div>
+            
+            <div>
+              <h2 className="text-3xl font-black text-slate-900 leading-none italic uppercase tracking-tighter">{basicData?.name}</h2>
+              <div className="flex items-center justify-center gap-2 mt-2">
+                 <span className="text-[9px] font-black bg-slate-100 text-slate-500 px-3 py-1 rounded-full uppercase tracking-widest border border-slate-200">NSS: {basicData?.nss}</span>
+              </div>
             </div>
           </div>
           
