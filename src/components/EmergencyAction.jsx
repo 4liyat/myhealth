@@ -138,27 +138,30 @@ const EmergencyAction = () => {
       </div>
 
       {/* NIVEL 2: HISTORIAL CLÍNICO (PROTEGIDO) */}
-      <div className="bg-slate-100 rounded-3xl p-6 border-2 border-dashed border-slate-300">
+      <div className="bg-slate-100 rounded-[40px] p-8 border-2 border-dashed border-slate-300">
         {!isAuthorized ? (
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 text-slate-500 mb-4">
-              <Lock size={20} />
-              <p className="font-bold text-sm uppercase">Historial Clínico Protegido</p>
+          <div className="space-y-6 text-center">
+            <div className="flex flex-col items-center gap-3">
+              <div className="bg-white p-4 rounded-3xl text-slate-400 shadow-sm">
+                <Lock size={32} />
+              </div>
+              <h4 className="font-black text-slate-800 uppercase italic tracking-tighter text-xl">Historial Protegido</h4>
+              <p className="text-xs text-slate-500 leading-relaxed px-2">Se requiere el PIN del paciente para acceder a su historial completo en Monad.</p>
             </div>
-            <p className="text-xs text-slate-500">Se requiere el PIN del paciente o autorización biométrica para acceder al historial completo en la Blockchain.</p>
-            <div className="flex gap-2">
+            
+            <div className="space-y-3">
               <input 
                 type="password" 
                 placeholder="Introducir PIN" 
-                className="flex-1 p-4 rounded-xl border-2 border-slate-200 focus:border-mihealth-blue outline-none font-bold text-center"
+                className="w-full p-5 rounded-[24px] border-2 border-slate-200 focus:border-mihealth-blue outline-none font-bold text-center text-lg shadow-inner bg-white"
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
               />
               <button 
                 onClick={handleAuthorize}
-                className="bg-slate-800 text-white px-6 rounded-xl font-bold active:scale-95 transition-transform"
+                className="w-full bg-slate-900 text-white py-5 rounded-[24px] font-black uppercase tracking-widest text-xs shadow-xl active:scale-95 transition-all"
               >
-                DESBLOQUEAR
+                Desbloquear Información
               </button>
             </div>
           </div>

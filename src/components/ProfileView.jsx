@@ -1,166 +1,173 @@
 import React, { useState } from 'react';
-import { User, ShieldCheck, Fingerprint, CreditCard, ChevronRight, Settings, Bell } from 'lucide-react';
+import { User, ShieldCheck, Fingerprint, CreditCard, ChevronRight, Settings, Bell, Eye, Lock, Unlock, FileText, Activity } from 'lucide-react';
 
 const ProfileView = () => {
+  const [showVault, setShowVault] = useState(false);
   const [userData] = useState({
     name: "Juan Pérez",
-    email: "juan.perez@email.com",
     nfcId: "MH-8829-01X",
-    wallet: "0x71C...4f92",
     bloodType: "O+",
-    status: "Activo"
+    criticalAllergy: "Penicilina",
+    vaultData: {
+      history: ["Cirugía de Apéndice (2024)", "Tratamiento Hipertensión"],
+      medications: ["Enalapril 10mg"],
+      lastCheckup: "15 Mar 2026"
+    }
   });
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 pb-12">
-      {/* Header del Perfil */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex items-center gap-4">
-        <div className="w-16 h-16 bg-mihealth-blue/10 rounded-2xl flex items-center justify-center text-mihealth-blue">
-          <User size={32} />
-        </div>
-        <div>
-          <h2 className="text-xl font-black text-slate-900 leading-tight">{userData.name}</h2>
-          <p className="text-xs text-slate-500 font-medium">{userData.email}</p>
-          <div className="mt-1 flex items-center gap-1">
-            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-            <span className="text-[10px] font-bold text-green-600 uppercase tracking-tighter">Identidad Verificada</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Tarjeta de Identidad Digital (NFC + Blockchain) */}
-      <div className="bg-slate-900 rounded-3xl p-6 text-white relative overflow-hidden shadow-2xl">
-        <div className="absolute top-0 right-0 p-8 opacity-10">
-          <Fingerprint size={120} />
-        </div>
-        
-        <div className="relative z-10 space-y-6">
-          <div className="flex justify-between items-start">
-            <CreditCard className="text-mihealth-blue" size={32} />
-            <span className="bg-mihealth-blue/20 text-mihealth-blue text-[10px] px-3 py-1 rounded-full font-bold border border-mihealth-blue/30 uppercase">
-              Monad Pass
-            </span>
-          </div>
-
-          <div>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">NFC ID</p>
-            <p className="text-xl font-mono font-bold tracking-wider">{userData.nfcId}</p>
-          </div>
-
-          <div className="flex justify-between items-end">
-            <div>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Wallet Address</p>
-              <p className="text-xs font-mono text-slate-300">{userData.wallet}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Sangre</p>
-              <p className="text-2xl font-black text-mihealth-red">{userData.bloodType}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Respaldo QR (Plan B) */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex items-center justify-between gap-6">
-        <div className="space-y-2 flex-1">
-          <h3 className="font-black uppercase text-xs tracking-widest text-slate-400">Respaldo de Emergencia</h3>
-          <p className="text-sm font-bold text-slate-800">Código QR Universal</p>
-          <p className="text-[10px] text-slate-400 leading-tight">Usa este código si el lector NFC no es compatible con el dispositivo del rescatista.</p>
-        </div>
-        <div className="p-2 bg-slate-50 rounded-2xl border border-slate-100 shrink-0">
-          <div className="w-16 h-16 bg-slate-900 rounded-lg flex items-center justify-center p-1 overflow-hidden">
-             {/* Simulación de QR con un Grid */}
-             <div className="grid grid-cols-4 gap-0.5 w-full h-full opacity-80">
-                {[...Array(16)].map((_, i) => (
-                  <div key={i} className={`rounded-sm ${Math.random() > 0.4 ? 'bg-white' : 'bg-transparent'}`}></div>
-                ))}
-             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Red de Apoyo (Contactos de Emergencia) */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-black uppercase text-xs tracking-widest text-slate-400 flex items-center gap-2">
-            <Bell size={14} className="text-mihealth-red" /> Red de Apoyo
+    <div className="space-y-8 animate-in fade-in duration-500 pb-12">
+      
+      {/* SECCIÓN 1: PERFIL DE EMERGENCIA (PÚBLICO) */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between px-2">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+            <Eye size={14} className="text-mihealth-red" /> Vista de Emergencia (Pública)
           </h3>
-          <button className="text-[10px] font-bold text-mihealth-blue uppercase tracking-tighter">Editar</button>
+          <span className="text-[9px] bg-red-100 text-mihealth-red px-2 py-0.5 rounded-full font-bold">VISIBLE POR RESCATISTAS</span>
         </div>
-        
-        <div className="space-y-3">
-          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-mihealth-red/10 rounded-full flex items-center justify-center text-mihealth-red text-xs font-bold">MG</div>
+
+        <div className="bg-white rounded-[32px] p-6 shadow-xl border-l-[12px] border-mihealth-red relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-6 opacity-5">
+            <Activity size={80} />
+          </div>
+          
+          <div className="relative z-10 space-y-4">
+            <div className="flex justify-between items-start">
               <div>
-                <p className="text-sm font-bold text-slate-800">María García</p>
-                <p className="text-[10px] text-slate-400 font-medium italic">Esposa • Recibe Alertas SOS</p>
+                <h2 className="text-3xl font-black text-slate-900 italic tracking-tighter uppercase leading-none">{userData.name}</h2>
+                <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">Pasaporte de Salud MiHealth</p>
+              </div>
+              <div className="bg-slate-50 p-2 rounded-xl">
+                <CreditCard size={20} className="text-slate-400" />
               </div>
             </div>
-            <a href="tel:+523312345678" className="p-2 text-slate-400 hover:text-mihealth-blue transition-colors">
-              <ChevronRight size={20} />
-            </a>
-          </div>
 
-          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-500 text-xs font-bold">JP</div>
-              <div>
-                <p className="text-sm font-bold text-slate-800">Juan Pérez Jr.</p>
-                <p className="text-[10px] text-slate-400 font-medium italic">Hijo</p>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <p className="text-[9px] font-bold text-slate-400 uppercase">Sangre</p>
+                <p className="text-2xl font-black text-mihealth-red leading-none">{userData.bloodType}</p>
+              </div>
+              <div className="bg-red-50 p-3 rounded-2xl border border-red-100">
+                <p className="text-[9px] font-bold text-red-400 uppercase">Alergia</p>
+                <p className="text-sm font-black text-red-700 leading-none truncate">{userData.criticalAllergy}</p>
               </div>
             </div>
-            <ChevronRight size={20} className="text-slate-200" />
+            
+            <div className="text-[10px] text-slate-400 font-medium italic border-t border-slate-100 pt-3">
+              * Estos datos se muestran automáticamente al escanear tu brazalete.
+            </div>
           </div>
         </div>
+      </section>
+
+      {/* SECCIÓN 2: BÓVEDA MÉDICA (PRIVADA) */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between px-2">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+            <Lock size={14} className="text-mihealth-blue" /> Bóveda de Salud (Privada)
+          </h3>
+          <ShieldCheck size={16} className="text-mihealth-blue" />
+        </div>
+
+        <div className={`bg-slate-900 rounded-[40px] transition-all duration-500 border-2 overflow-hidden ${showVault ? 'border-mihealth-blue shadow-2xl shadow-blue-900/20' : 'border-slate-800'}`}>
+          {!showVault ? (
+            <div className="p-8 space-y-6 flex flex-col items-center text-center">
+              <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center text-mihealth-blue border border-white/10">
+                <Fingerprint size={40} />
+              </div>
+              <div className="space-y-2">
+                <h4 className="text-white font-black text-xl italic uppercase tracking-tighter">Bóveda Cifrada</h4>
+                <p className="text-slate-400 text-xs px-2 leading-relaxed font-medium">
+                  Tu historial clínico y medicación están protegidos con tecnología Monad.
+                </p>
+              </div>
+              <button 
+                onClick={() => setShowVault(true)}
+                className="w-full bg-mihealth-blue hover:bg-blue-600 text-white py-5 rounded-[24px] font-black uppercase tracking-widest text-xs transition-all shadow-lg shadow-blue-900/40 active:scale-95"
+              >
+                Desbloquear Información
+              </button>
+            </div>
+          ) : (
+            <div className="animate-in fade-in slide-in-from-top-4 duration-500">
+              <div className="p-6 space-y-6">
+                <div className="flex justify-between items-center border-b border-white/10 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-mihealth-blue/20 rounded-xl">
+                      <Unlock size={18} className="text-mihealth-blue" />
+                    </div>
+                    <span className="text-white font-black text-sm uppercase tracking-widest leading-none">Acceso Autorizado</span>
+                  </div>
+                  <button onClick={() => setShowVault(false)} className="text-[10px] text-slate-500 font-bold uppercase hover:text-white transition-colors">Cerrar</button>
+                </div>
+
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <p className="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1 tracking-widest">
+                      <FileText size={10} /> Historial Clínico
+                    </p>
+                    <div className="space-y-2">
+                      {userData.vaultData.history.map((item, i) => (
+                        <div key={i} className="bg-white/5 p-4 rounded-2xl text-slate-200 text-xs font-semibold border border-white/5">
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
+                      <p className="text-[9px] font-black text-slate-500 uppercase mb-1 tracking-widest">Medicinas</p>
+                      <p className="text-white text-xs font-bold">{userData.vaultData.medications[0]}</p>
+                    </div>
+                    <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
+                      <p className="text-[9px] font-black text-slate-500 uppercase mb-1 tracking-widest">Última Cita</p>
+                      <p className="text-white text-xs font-bold">{userData.vaultData.lastCheckup}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/5 p-4 text-center">
+                <p className="text-[9px] text-slate-600 font-bold uppercase tracking-widest italic">
+                  Datos Sincronizados con Monad Blockchain
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* SECCIÓN 3: RED DE APOYO */}
+      <section className="bg-white rounded-[32px] p-6 shadow-sm border border-slate-100 space-y-4">
+        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+          <Bell size={14} className="text-mihealth-red" /> Contactos SOS
+        </h3>
+        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-mihealth-red/10 rounded-full flex items-center justify-center text-mihealth-red text-xs font-black">MG</div>
+            <div>
+              <p className="text-sm font-bold text-slate-800 leading-tight">María García</p>
+              <p className="text-[10px] text-slate-400 font-medium">Esposa • SMS Activo</p>
+            </div>
+          </div>
+          <ChevronRight size={18} className="text-slate-300" />
+        </div>
+      </section>
+
+      {/* OPCIONES ADICIONALES */}
+      <div className="flex gap-4 px-2">
+        <button className="flex-1 bg-slate-100 p-4 rounded-2xl text-slate-500 flex flex-col items-center gap-1 transition-colors hover:bg-slate-200">
+          <Settings size={20} />
+          <span className="text-[9px] font-black uppercase">Ajustes</span>
+        </button>
+        <button className="flex-1 bg-slate-100 p-4 rounded-2xl text-slate-500 flex flex-col items-center gap-1 transition-colors hover:bg-slate-200">
+          <History size={20} />
+          <span className="text-[9px] font-black uppercase">Wallet</span>
+        </button>
       </div>
 
-      {/* Menú de Opciones */}
-      <div className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm">
-        <button className="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors border-b border-slate-50">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-amber-50 text-amber-600 rounded-lg">
-              <ShieldCheck size={20} />
-            </div>
-            <div className="text-left">
-              <p className="text-sm font-bold text-slate-800 uppercase tracking-tight">Privacidad y PIN</p>
-              <p className="text-[10px] text-slate-400">Gestiona quién accede a tu historial</p>
-            </div>
-          </div>
-          <ChevronRight size={18} className="text-slate-300" />
-        </button>
-
-        <button className="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors border-b border-slate-50">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-              <Bell size={20} />
-            </div>
-            <div className="text-left">
-              <p className="text-sm font-bold text-slate-800 uppercase tracking-tight">Notificaciones SOS</p>
-              <p className="text-[10px] text-slate-400">Alertas enviadas a tus contactos</p>
-            </div>
-          </div>
-          <ChevronRight size={18} className="text-slate-300" />
-        </button>
-
-        <button className="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-slate-50 text-slate-600 rounded-lg">
-              <Settings size={20} />
-            </div>
-            <div className="text-left">
-              <p className="text-sm font-bold text-slate-800 uppercase tracking-tight">Configuración</p>
-              <p className="text-[10px] text-slate-400">Idioma, Red Monad y Dispositivos</p>
-            </div>
-          </div>
-          <ChevronRight size={18} className="text-slate-300" />
-        </button>
-      </div>
-
-      {/* Botón de Acción Secundario */}
-      <button className="w-full py-4 rounded-2xl border-2 border-slate-200 text-slate-500 font-bold text-sm uppercase tracking-widest hover:bg-slate-50 transition-colors">
-        Actualizar Ficha Médica
-      </button>
     </div>
   );
 };
