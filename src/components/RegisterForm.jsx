@@ -124,20 +124,20 @@ const RegisterForm = ({ onComplete }) => {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className={labelStyle}>Enfermedad Crónica</label>
-              <input type="text" className={inputStyle} placeholder="Ej. Diabetes..." value={formData.chronicDisease} onChange={(e) => setFormData({...formData, chronicDisease: e.target.value})} />
+              <label className={labelStyle}>Religión (Opcional)</label>
+              <input type="text" className={inputStyle} placeholder="Ej. Católico..." value={formData.religion} onChange={(e) => setFormData({...formData, religion: e.target.value})} />
             </div>
             <div>
-              <label className={labelStyle}>Medicamento Base</label>
-              <input type="text" className={inputStyle} placeholder="Ej. Insulina..." value={formData.baseMedication} onChange={(e) => setFormData({...formData, baseMedication: e.target.value})} />
+              <label className={labelStyle}>Enfermedad Crónica</label>
+              <input type="text" className={inputStyle} placeholder="Ej. Diabetes..." value={formData.chronicDisease} onChange={(e) => setFormData({...formData, chronicDisease: e.target.value})} />
             </div>
           </div>
 
           <div>
-            <label className={labelStyle}>Historial / Cirugías</label>
+            <label className={labelStyle}>Medicamento Base / Historial</label>
             <textarea 
-              className={`${inputStyle} h-24 resize-none`} 
-              placeholder="Ej. Cirugía de apéndice (2020), Alergia a la penicilina..." 
+              className={`${inputStyle} h-20 resize-none`} 
+              placeholder="Ej. Insulina, Cirugía de apéndice (2020)..." 
               value={formData.history} 
               onChange={(e) => setFormData({...formData, history: e.target.value})}
             />
@@ -179,18 +179,21 @@ const RegisterForm = ({ onComplete }) => {
               <Lock size={32} />
             </div>
             <h2 className="text-2xl font-black italic uppercase tracking-tighter">PIN de Bóveda</h2>
-            <p className="text-slate-500 text-xs font-medium">Crea un PIN de 4 dígitos para que solo los rescatistas autorizados vean tu historial completo.</p>
+            <p className="text-slate-500 text-xs font-medium px-4">Solo los rescatistas autorizados verán tu historial al ingresar este PIN.</p>
           </header>
 
-          <div className="flex justify-center gap-4">
-            <input 
-              type="password" 
-              maxLength="4"
-              className="w-48 text-center text-4xl tracking-[1em] font-black p-4 rounded-3xl border-2 border-slate-100 focus:border-myhealth-blue outline-none transition-all"
-              placeholder="0000"
-              value={formData.pin}
-              onChange={(e) => setFormData({...formData, pin: e.target.value.replace(/\D/g, '')})}
-            />
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-full max-w-[280px]">
+              <input 
+                type="password" 
+                maxLength="4"
+                className="w-full text-center text-4xl tracking-[0.8em] font-black p-5 rounded-3xl border-2 border-slate-100 focus:border-myhealth-blue outline-none transition-all bg-slate-50/50 pr-0 pl-[0.8em]"
+                placeholder="****"
+                value={formData.pin}
+                onChange={(e) => setFormData({...formData, pin: e.target.value.replace(/\D/g, '')})}
+              />
+            </div>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">4 dígitos numéricos</p>
           </div>
 
           <div className="flex gap-3 mt-8">
@@ -208,7 +211,7 @@ const RegisterForm = ({ onComplete }) => {
               <CheckCircle size={32} />
             </div>
             <h2 className="text-2xl font-black italic uppercase tracking-tighter">Revisión Final</h2>
-            <p className="text-slate-500 text-xs font-medium">Verifica que todo esté correcto antes de guardar en la Blockchain.</p>
+            <p className="text-slate-500 text-xs font-medium">Verifica tus datos antes de subirlos a la red.</p>
           </header>
 
           <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar border-y border-slate-50 py-4">
@@ -234,8 +237,8 @@ const RegisterForm = ({ onComplete }) => {
                   <p className="text-xs font-black text-myhealth-red">{formData.bloodType}</p>
                 </div>
                 <div className="bg-white p-2 rounded-xl border border-slate-100">
-                  <p className="text-[8px] font-bold text-slate-400 uppercase">Donador</p>
-                  <p className="text-xs font-black text-slate-800">{formData.isDonor}</p>
+                  <p className="text-[8px] font-bold text-slate-400 uppercase">Religión</p>
+                  <p className="text-xs font-black text-slate-800">{formData.religion || 'N/A'}</p>
                 </div>
               </div>
               <p className="text-[10px] text-slate-700 font-medium"><strong>Crónica:</strong> {formData.chronicDisease || 'Ninguna'}</p>
